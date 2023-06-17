@@ -48,7 +48,7 @@ hub pull-request --base main -l enhancement --assign mykyta-lazurenko --no-edit
 # pull_request_url=$(hub pr show)
 # echo "Pull request created: $pull_request_url"
 
-gh pr merge --squash --delete-branch
+gh pr merge --squash --delete-branch --admin
 git checkout main
 git pull
 git branch -d "$branch_name"
