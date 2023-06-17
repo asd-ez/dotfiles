@@ -51,4 +51,3 @@ hub pull-request --base main -l enhancement --assign mykyta-lazurenko --no-edit
 gh pr merge --squash --delete-branch --admin
 git checkout main
 git pull
-git branch -d "$branch_name"
