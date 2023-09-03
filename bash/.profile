@@ -13,8 +13,8 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # java
-# echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"'
-# export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
+echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"'
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
 
 # node versions
 export NVM_DIR=~/.nvm
@@ -22,6 +22,9 @@ source $(brew --prefix nvm)/nvm.sh
 
 # rbenv
 eval "$(rbenv init - zsh)"
+
+# asdf
+. "$HOME/.asdf/asdf.sh"
 
 # aliases
 alias ll='ls -alF'
@@ -38,9 +41,11 @@ alias gcb='git checkout -b'
 
 alias pwdc='pwd | pbcopy'
 
-# custom functions
 function _sys_notify() {
   local notification_command="display notification \"$2\" with title \"$1\""
   osascript -e "$notification_command"
 }
 alias sys-notify="_sys_notify $1 $2"
+
+# libiconv
+export PATH="/opt/homebrew/opt/libiconv/bin:$PATH"
