@@ -6,3 +6,6 @@ cp ~/.zshrc zsh/
 
 # bash
 cp ~/.profile bash/
+
+# asdf
+cp ~/.tool-versions asdf/
