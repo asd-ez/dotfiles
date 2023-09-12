@@ -13,7 +13,6 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # java
-echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"'
 export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
 
 # node versions
