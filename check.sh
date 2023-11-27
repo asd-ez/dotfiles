@@ -6,29 +6,29 @@ set -u
 set -e
 
 print_usage() {
-  printf "Usage: ...nothing...\n"
+	printf "Usage: ...nothing...\n"
 }
 
 while getopts :hf:c: OPTION; do
-  case "${OPTION}" in
-  f)
-    type_commit="feat"
-    message="${OPTARG}"
-    ;;
-  c)
-    type_commit="chore"
-    message="${OPTARG}"
-    ;;
-  h | *)
-    print_usage
-    exit 1
-    ;;
-  esac
+	case "${OPTION}" in
+	f)
+		type_commit="feat"
+		message="${OPTARG}"
+		;;
+	c)
+		type_commit="chore"
+		message="${OPTARG}"
+		;;
+	h | *)
+		print_usage
+		exit 1
+		;;
+	esac
 done
 
 if [ -z "${type_commit}" ]; then
-  print_usage
-  exit 1
+	print_usage
+	exit 1
 fi
 
 replaced_message=$(echo "$message" | sed -r 's/[ .]+/_/g')
@@ -42,10 +42,10 @@ git commit -m "$commit_message"
 git push origin "$branch_name"
 
 gh pr create \
-  --label enhancement \
-  --assignee @me \
-  --body '' \
-  --title "$commit_message" \
-  --base main \
-  --head "$branch_name"
+	--label enhancement \
+	--assignee @me \
+	--body '' \
+	--title "$commit_message" \
+	--base main \
+	--head "$branch_name"
 gh pr merge --squash --delete-branch
