@@ -48,6 +48,3 @@ alias sys-notify="_sys_notify $1 $2"
 
 # libiconv
 export PATH="/opt/homebrew/opt/libiconv/bin:$PATH"
-
-# expertbox
-export DISABLE_SPRING=true
