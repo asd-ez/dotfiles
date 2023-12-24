@@ -46,6 +46,6 @@ gh pr create \
 	--assignee @me \
 	--body '' \
 	--title "$commit_message" \
-	--base main \
+	--base master \
 	--head "$branch_name"
 gh pr merge --squash --delete-branch
