@@ -2,11 +2,6 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# Setting PATH for Python 3.10
-# The original version is saved in .zprofile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}"
-export PATH
-
 # PYENV_ROOT
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
@@ -14,10 +9,6 @@ eval "$(pyenv init -)"
 
 # java
 export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
-
-# node versions
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
 
 # rbenv
 eval "$(rbenv init - zsh)"
@@ -40,13 +31,6 @@ alias gcb='git checkout -b'
 
 alias pwdc='pwd | pbcopy'
 
-function _sys_notify() {
-  local notification_command="display notification \"$2\" with title \"$1\""
-  osascript -e "$notification_command"
-}
-alias sys-notify="_sys_notify $1 $2"
-
-# libiconv
 export PATH="/opt/homebrew/opt/libiconv/bin:$PATH"
 
 # expertbox
