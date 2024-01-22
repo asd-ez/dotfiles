@@ -16,5 +16,5 @@ cp ~/.config/nvim/init.lua .config/nvim/init.lua
 cp ~/.config/nvim/lazyvim.json .config/nvim/lazyvim.json
 
 # fish and oh-my-fish's config
-cp -a ~/.config/fish .config/fish
+cp ~/.config/fish/config.fish .config/fish/config.fish
 cp -a ~/.config/omf .config/omf
