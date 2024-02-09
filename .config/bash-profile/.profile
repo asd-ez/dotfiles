@@ -16,6 +16,9 @@ eval "$(rbenv init - zsh)"
 # asdf
 . "$HOME/.asdf/asdf.sh"
 
+# flutter
+export PATH=$PATH:"/Users/nikita/fvm/default/bin"
+
 # aliases
 alias ll='ls -alF'
 alias la='ls -A'
