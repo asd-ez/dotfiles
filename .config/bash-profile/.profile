@@ -1,5 +1,8 @@
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
+# change locale to en_US
+export LANG="en_US.UTF-8"
+
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # PYENV_ROOT
@@ -10,14 +13,12 @@ eval "$(pyenv init -)"
 # java
 export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
 
-# rbenv
-eval "$(rbenv init - zsh)"
-
 # asdf
 . "$HOME/.asdf/asdf.sh"
 
-# flutter
+# dart & flutter
 export PATH=$PATH:"/Users/nikita/fvm/default/bin"
+export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 # aliases
 alias ll='ls -alF'
@@ -38,3 +39,6 @@ export PATH="/opt/homebrew/opt/libiconv/bin:$PATH"
 
 # expertbox
 export DISABLE_SPRING=true
+
+# mysql
+export PATH=${PATH}:/usr/local/mysql-8.4.0-macos14-arm64/bin

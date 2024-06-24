@@ -18,3 +18,6 @@ cp ~/.config/nvim/lazyvim.json .config/nvim/lazyvim.json
 # fish and oh-my-fish's config
 cp ~/.config/fish/config.fish .config/fish/config.fish
 cp -a ~/.config/omf .config/omf
+
+# alacritty
+cp ~/.config/alacritty/alacritty.toml .config/alacritty/alacritty.toml
