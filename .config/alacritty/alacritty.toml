@@ -1,0 +1,20 @@
+[window]
+padding = { x = 4, y = 4 }
+dynamic_padding = true
+
+opacity = 0.4
+blur = true
+
+decorations = "Buttonless"
+
+option_as_alt = "Both"
+
+[scrolling]
+multiplier = 4
+
+[font]
+normal.family = "Hack Nerd Font"
+size = 20
+
+# [debug]
+# render_timer = true
