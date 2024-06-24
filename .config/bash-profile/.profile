@@ -39,3 +39,6 @@ export PATH="/opt/homebrew/opt/libiconv/bin:$PATH"
 
 # expertbox
 export DISABLE_SPRING=true
+
+# mysql
+export PATH=${PATH}:/usr/local/mysql-8.4.0-macos14-arm64/bin
