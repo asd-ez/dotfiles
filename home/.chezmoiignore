@@ -6,4 +6,5 @@
 .tool-versions
 .config/fish
 .config/omf
+.claude
 {{- end }}
