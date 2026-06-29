@@ -3,11 +3,15 @@ padding = { x = 4, y = 4 }
 dynamic_padding = true
 
 opacity = 0.6
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "windows") }}
 blur = true
+{{- end }}
+{{- if eq .chezmoi.os "darwin" }}
 
+# macOS-only window options (these keys fail to parse on Linux/Windows)
 decorations = "Buttonless"
-
 option_as_alt = "Both"
+{{- end }}
 
 [scrolling]
 multiplier = 4
