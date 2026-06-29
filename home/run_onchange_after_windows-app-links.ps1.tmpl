@@ -1,0 +1,21 @@
+{{- if eq .chezmoi.os "windows" -}}
+# Bridge chezmoi-managed ~/.config copies to the paths Windows apps actually read.
+# Junctions (not symlinks) so they work without admin / Developer Mode.
+$ErrorActionPreference = "Stop"
+$cfg = Join-Path $HOME ".config"
+
+function Link-Dir($source, $target) {
+    if (-not (Test-Path $source)) { return }
+    if (Test-Path $target) { return }
+    $parent = Split-Path $target -Parent
+    if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
+    New-Item -ItemType Junction -Path $target -Target $source | Out-Null
+    Write-Host "linked $target -> $source"
+}
+
+# Neovim reads %LOCALAPPDATA%\nvim
+Link-Dir (Join-Path $cfg "nvim") (Join-Path $env:LOCALAPPDATA "nvim")
+
+# Alacritty reads %APPDATA%\alacritty
+Link-Dir (Join-Path $cfg "alacritty") (Join-Path $env:APPDATA "alacritty")
+{{- end -}}

@@ -1,0 +1,9 @@
+{{- if eq .chezmoi.os "windows" }}
+{{/* Native Windows can't use the unix shells/tmux/asdf. Keep only nvim + alacritty. */}}
+.zshrc
+.profile
+.tmux.conf
+.tool-versions
+.config/fish
+.config/omf
+{{- end }}
