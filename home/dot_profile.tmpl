@@ -1,8 +1,27 @@
-# ~/.profile -- POSIX login config, sourced by zsh (.zshrc) and fish (via bass).
+# ~/.profile -- POSIX env + aliases, read by login shells and by any sh script.
 # Managed by chezmoi. OS-specific blocks are templated per .chezmoi.os.
+#
+# This file owns environment and aliases; ~/.bashrc owns interactive bash
+# behaviour (prompt, history, completion). The two source each other so that
+# both login and non-login shells end up with everything -- the __*_SOURCED
+# guards below are what stop that from looping.
+__PROFILE_SOURCED=1
 
-# locale
-export LANG="en_US.UTF-8"
+# Prepend to PATH only if absent. Nested shells (tmux, a bash inside a bash)
+# re-read this file, and a plain prepend would grow PATH on every level.
+__path_prepend() {
+  case ":$PATH:" in
+    *":$1:"*) ;;
+    *) PATH="$1:$PATH" ;;
+  esac
+}
+
+# locale -- only export if the system has it generated. Ubuntu/WSL images often
+# ship C.UTF-8 only, and setting a missing locale makes bash warn on every start.
+# To get it: sudo locale-gen en_US.UTF-8 && sudo update-locale
+if locale -a 2>/dev/null | grep -qiE '^en_US\.utf-?8$'; then
+  export LANG="en_US.UTF-8"
+fi
 
 {{- if eq .chezmoi.os "darwin" }}
 
@@ -10,7 +29,7 @@ export LANG="en_US.UTF-8"
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
-export PATH="/opt/homebrew/opt/libiconv/bin:$PATH"
+__path_prepend "/opt/homebrew/opt/libiconv/bin"
 {{- else if eq .chezmoi.os "linux" }}
 
 # --- Linux / Homebrew (if installed) ---
@@ -19,15 +38,29 @@ export PATH="/opt/homebrew/opt/libiconv/bin:$PATH"
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+command -v pyenv >/dev/null || __path_prepend "$PYENV_ROOT/bin"
 command -v pyenv >/dev/null && eval "$(pyenv init -)"
 
-# asdf
-[ -f "$HOME/.asdf/asdf.sh" ] && . "$HOME/.asdf/asdf.sh"
+# user-local binaries (pipx, chezmoi)
+__path_prepend "$HOME/.local/bin"
 
-# dart & flutter
-export PATH="$PATH:$HOME/fvm/default/bin"
-export PATH="$PATH:$HOME/.pub-cache/bin"
+# bun
+export BUN_INSTALL="$HOME/.bun"
+__path_prepend "$BUN_INSTALL/bin"
+
+# pnpm
+{{- if eq .chezmoi.os "darwin" }}
+export PNPM_HOME="$HOME/Library/pnpm"
+{{- else }}
+export PNPM_HOME="$HOME/.local/share/pnpm"
+{{- end }}
+__path_prepend "$PNPM_HOME"
+
+# go
+export GOPRIVATE="github.com/Delivr-Ai/*"
+[ -d "$HOME/go/bin" ] && __path_prepend "$HOME/go/bin"
+
+export PATH
 
 # aliases
 alias ll='ls -alF'
@@ -42,6 +75,9 @@ alias gpl='git pull'
 alias gco='git checkout'
 alias gcb='git checkout -b'
 
+# claude code, no permission prompts -- every tool call runs unconfirmed
+alias ccd='claude --dangerously-skip-permissions'
+
 {{- if eq .chezmoi.os "darwin" }}
 alias pwdc='pwd | pbcopy'
 {{- else }}
@@ -55,11 +91,8 @@ elif command -v clip.exe >/dev/null; then
 fi
 {{- end }}
 
-# expertbox
-export DISABLE_SPRING=true
-
-{{- if eq .chezmoi.os "darwin" }}
-
-# mysql (macOS)
-export PATH="${PATH}:/usr/local/mysql-8.4.0-macos14-arm64/bin"
-{{- end }}
+# A login bash reads this file but not ~/.bashrc, so pull the interactive
+# config in here. Skipped when ~/.bashrc is what sourced us.
+if [ -n "${BASH_VERSION-}" ] && [ -z "${__BASHRC_SOURCED-}" ] && [ -f "$HOME/.bashrc" ]; then
+  . "$HOME/.bashrc"
+fi
