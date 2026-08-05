@@ -36,17 +36,19 @@ __path_prepend "/opt/homebrew/opt/libiconv/bin"
 [ -d /home/linuxbrew/.linuxbrew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 {{- end }}
 
-# pyenv
+# pyenv. Add the bin only if it exists, so a machine without pyenv does not carry
+# a dead entry; still init whenever pyenv is on PATH, which covers a package
+# manager install that does not live under PYENV_ROOT.
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || __path_prepend "$PYENV_ROOT/bin"
+[ -d "$PYENV_ROOT/bin" ] && __path_prepend "$PYENV_ROOT/bin"
 command -v pyenv >/dev/null && eval "$(pyenv init -)"
 
 # user-local binaries (pipx, chezmoi)
-__path_prepend "$HOME/.local/bin"
+[ -d "$HOME/.local/bin" ] && __path_prepend "$HOME/.local/bin"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-__path_prepend "$BUN_INSTALL/bin"
+[ -d "$BUN_INSTALL/bin" ] && __path_prepend "$BUN_INSTALL/bin"
 
 # pnpm
 {{- if eq .chezmoi.os "darwin" }}
@@ -54,7 +56,9 @@ export PNPM_HOME="$HOME/Library/pnpm"
 {{- else }}
 export PNPM_HOME="$HOME/.local/share/pnpm"
 {{- end }}
-__path_prepend "$PNPM_HOME"
+# PNPM_HOME stays exported either way: `pnpm setup` reads it to decide where to
+# install. Only the PATH entry is conditional on the directory existing.
+[ -d "$PNPM_HOME" ] && __path_prepend "$PNPM_HOME"
 
 # go
 export GOPRIVATE="github.com/Delivr-Ai/*"
