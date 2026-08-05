@@ -1,0 +1,21 @@
+[theme]
+name = "gruvbox"
+auto_switch = false
+
+[ui]
+agent_panel_sort = "spaces"
+
+# Toast when a background agent finishes or asks a question.
+# "herdr" is the in-app toast and always works; "terminal" asks Windows
+# Terminal for a desktop notification, "system" asks the OS service.
+[ui.toast]
+delivery = "herdr"
+delay_seconds = 1
+
+[experimental]
+# Keep recent pane screen history across server restarts.
+pane_history = true
+
+[advanced]
+# A long Claude session overruns the 10 MB default.
+scrollback_limit_bytes = 50000000
