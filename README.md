@@ -32,6 +32,19 @@ chezmoi cd                 # drop into the source repo to commit/push
 
 Edits live in the source repo, then commit and push from `chezmoi cd`.
 
+## Documentation
+
+Why the repo is shaped this way, and what has to stay true, lives in
+[docs/](docs/README.md):
+
+- [Decisions](docs/decisions/README.md) - architecture decision records, append-only
+- [Non-functional requirements](docs/nfr/README.md) - portability, idempotency, startup
+  latency, recoverability, secrets
+- [Guides](docs/guides/README.md) - bootstrap a machine, change a dotfile, troubleshooting
+
+Applying this repo to a machine that already has real shell config: read
+[bootstrap a machine](docs/guides/bootstrap-a-machine.md) first, not the one-liner above.
+
 ## Layout
 
 The chezmoi source tree is under `home/` (set via `.chezmoiroot`):
