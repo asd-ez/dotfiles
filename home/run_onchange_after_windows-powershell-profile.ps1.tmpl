@@ -1,0 +1,30 @@
+{{- if eq .chezmoi.os "windows" -}}
+# Point the real PowerShell profile at the chezmoi-managed alias file.
+#
+# $PROFILE is resolved by PowerShell itself, so this keeps working when
+# Documents is redirected into OneDrive; a hardcoded source path would not.
+# The stub is one line and never changes, so edits to the managed file take
+# effect in the next shell with no re-apply -- the same live-view property
+# the junctions give nvim and alacritty.
+$ErrorActionPreference = "Stop"
+
+$managed = Join-Path $HOME ".config\powershell\profile.ps1"
+if (-not (Test-Path $managed)) { return }
+
+# Single-quoted: $HOME stays literal in the stub and expands when it runs.
+$line = '. "$HOME\.config\powershell\profile.ps1"'
+$target = $PROFILE.CurrentUserAllHosts
+
+$parent = Split-Path $target -Parent
+if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
+
+if (Test-Path $target) {
+    # Never clobber a profile that already has content, and never double-append.
+    if (Select-String -Path $target -SimpleMatch $line -Quiet) { return }
+    Add-Content -Path $target -Value $line -Encoding utf8
+    Write-Host "appended alias loader to $target"
+} else {
+    Set-Content -Path $target -Value $line -Encoding utf8
+    Write-Host "wrote alias loader to $target"
+}
+{{- end -}}

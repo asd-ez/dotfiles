@@ -56,6 +56,7 @@ The chezmoi source tree is under `home/` (set via `.chezmoiroot`):
 | `home/dot_tmux.conf` | `~/.tmux.conf` | built-in settings only, no plugin manager |
 | `home/dot_config/nvim/` | `~/.config/nvim/` | LazyVim config |
 | `home/dot_config/alacritty/alacritty.toml.tmpl` | `~/.config/alacritty/alacritty.toml` | macOS-only window keys templated |
+| `home/dot_config/powershell/profile.ps1` | `~/.config/powershell/profile.ps1` | Windows-only aliases, loaded from `$PROFILE` |
 
 ## Shell wiring
 
@@ -66,10 +67,20 @@ and non-login shells get the full set, guarded by `__PROFILE_SOURCED` /
 so nested shells don't grow it. Machine-local, unmanaged aliases belong in
 `~/.bash_aliases`, which is sourced last and therefore wins.
 
+None of that applies on native Windows. There, PowerShell carries the same aliases
+from `~/.config/powershell/profile.ps1`, loaded by a one-line stub at `$PROFILE`
+([0010](docs/decisions/0010-powershell-aliases-on-windows.md)).
+
 ## OS coverage
 
 - **Linux / WSL2 / macOS**: everything above. WSL2 is treated as Linux.
-- **Native Windows**: only **nvim** and **alacritty** (bash and tmux don't
-  apply). Everything else is skipped via `.chezmoiignore`.
+- **Native Windows**: **nvim**, **alacritty** and a **PowerShell** alias profile
+  (bash and tmux don't apply, and are skipped via `.chezmoiignore`).
   `run_onchange_after_windows-app-links.ps1` junctions the Windows app paths
   (`%LOCALAPPDATA%\nvim`, `%APPDATA%\alacritty`) to the managed `~/.config` copies.
+  `run_onchange_after_windows-powershell-profile.ps1` writes a one-line stub at
+  `$PROFILE` that dot-sources the managed alias file
+  ([0010](docs/decisions/0010-powershell-aliases-on-windows.md)).
+
+  Aliases exist twice: in `dot_profile.tmpl` for POSIX shells and in `profile.ps1`
+  for PowerShell. Adding one means adding it in both.
