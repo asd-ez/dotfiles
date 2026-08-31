@@ -1,6 +1,9 @@
 {{- if eq .chezmoi.os "windows" }}
-{{/* Native Windows can't use the unix shell or tmux. Keep only nvim + alacritty. */}}
+{{/* Native Windows can't use the unix shell or tmux. */}}
 .bashrc
 .profile
 .tmux.conf
+{{- else }}
+{{/* The PowerShell alias file is Windows-only; nothing reads it elsewhere. */}}
+.config/powershell
 {{- end }}

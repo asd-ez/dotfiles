@@ -28,7 +28,9 @@ repo metadata never lands in your home directory
 ([0004](decisions/0004-bash-is-the-only-managed-shell.md)): `.profile` owns environment
 and aliases, `.bashrc` owns interactive behaviour, and they source each other under
 guards ([0005](decisions/0005-profile-and-bashrc-split.md)). Nothing depends on a plugin
-manager ([0006](decisions/0006-no-plugin-managers.md)).
+manager ([0006](decisions/0006-no-plugin-managers.md)). On native Windows, where bash
+does not apply, PowerShell carries the same aliases instead
+([0010](decisions/0010-powershell-aliases-on-windows.md)).
 
 ## Reading order
 
@@ -42,9 +44,11 @@ then [idempotency](nfr/idempotency.md), which is the requirement most changes th
 - **Nothing is tested automatically.** Every claim in these docs was verified by hand
   once. There is no CI, so a regression surfaces the next time someone opens a shell.
   See [idempotency](nfr/idempotency.md) for the checks worth running by hand.
-- **macOS and Windows are designed for, not currently verified.** The templated branches
-  for both are written and reviewed but were last exercised on Linux/WSL2 only. Treat a
-  first apply on either as unproven.
+- **macOS is designed for, not currently verified.** Its templated branches are written
+  and reviewed but were last exercised on Linux/WSL2 only. Treat a first apply as unproven.
+  Windows is no longer in this category: it was exercised end to end on 2026-08-31 on a
+  stock account with no elevation -- apply, both junctions, the PowerShell profile stub,
+  and a re-apply to confirm idempotency.
 - **A Claude Code statusline sync was lost.** It was merged (PR #20) into an
   already-merged branch rather than into `master`, so it never reached the default
   branch, and the branch holding it has since been deleted. If that feature is wanted,

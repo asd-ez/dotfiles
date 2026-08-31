@@ -18,6 +18,7 @@ reasonable person will propose again, including you in a year.
 | [0007](0007-idempotent-path-construction.md) | Accepted | PATH is built through a helper that skips entries already present |
 | [0008](0008-windows-junctions-not-symlinks.md) | Accepted | Windows gets nvim and alacritty only, linked with junctions rather than symlinks |
 | [0009](0009-machine-local-escape-hatch.md) | Accepted | One unmanaged file per machine, sourced last, so local overrides never fight the repo |
+| [0010](0010-powershell-aliases-on-windows.md) | Accepted | PowerShell is managed on Windows, aliases loaded through a one-line `$PROFILE` stub |
 
 ## Writing a new one
 
