@@ -64,6 +64,16 @@ export PNPM_HOME="$HOME/.local/share/pnpm"
 export GOPRIVATE="github.com/Delivr-Ai/*"
 [ -d "$HOME/go/bin" ] && __path_prepend "$HOME/go/bin"
 
+# asdf (pre-0.16 shell install; the script manages its own PATH entries)
+[ -f "$HOME/.asdf/asdf.sh" ] && . "$HOME/.asdf/asdf.sh"
+
+# dart & flutter (fvm)
+[ -d "$HOME/fvm/default/bin" ] && __path_prepend "$HOME/fvm/default/bin"
+[ -d "$HOME/.pub-cache/bin" ] && __path_prepend "$HOME/.pub-cache/bin"
+
+# LM Studio CLI
+[ -d "$HOME/.lmstudio/bin" ] && __path_prepend "$HOME/.lmstudio/bin"
+
 export PATH
 
 # aliases
