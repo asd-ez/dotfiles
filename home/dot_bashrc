@@ -67,6 +67,15 @@ fi
 # Alert on a long-running command: sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+# fzf key bindings and completion, if installed
+[ -f ~/.fzf.bash ] && . ~/.fzf.bash
+
+# peon-ping quick controls, if the Claude Code hook is installed
+if [ -f "$HOME/.claude/hooks/peon-ping/peon.sh" ]; then
+    alias peon="bash $HOME/.claude/hooks/peon-ping/peon.sh"
+    [ -f "$HOME/.claude/hooks/peon-ping/completions.bash" ] && . "$HOME/.claude/hooks/peon-ping/completions.bash"
+fi
+
 # Machine-local additions, deliberately not managed by chezmoi.
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
